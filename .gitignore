@@ -1,0 +1,17 @@
+# Frontend
+node_modules/
+dist/
+
+# Backend
+backend/venv/
+backend/__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Environment files
+.env
+
+# System files
+desktop.ini
