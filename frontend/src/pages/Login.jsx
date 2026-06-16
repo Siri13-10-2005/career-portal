@@ -8,8 +8,7 @@ function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] =
-    useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
@@ -20,23 +19,46 @@ function Login() {
           password,
         }
       );
+
       console.log(response.data);
 
       localStorage.setItem(
         "token",
         response.data.access_token
       );
+
       localStorage.setItem(
         "role",
         response.data.user.role
       );
 
-      toast.success(response.data.message);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.user)
+      );
 
-      navigate("/jobs");
+      toast.success(
+        response.data.message
+      );
+
+      const role =
+        response.data.user.role;
+
+      if (role === "recruiter") {
+        navigate(
+          "/recruiter-dashboard"
+        );
+      } else {
+        navigate("/jobs");
+      }
+
     } catch (error) {
       console.log(error);
-      toast.error("Login Failed");
+
+      toast.error(
+        error.response?.data?.detail ||
+        "Login Failed"
+      );
     }
   };
 
