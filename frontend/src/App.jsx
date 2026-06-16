@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -36,6 +37,9 @@ function Layout() {
       {!hideNavbar && <Navbar />}
 
       <Routes>
+
+        {/* PUBLIC ROUTES */}
+
         <Route
           path="/"
           element={<Login />}
@@ -46,65 +50,120 @@ function Layout() {
           element={<Register />}
         />
 
+        {/* STUDENT ROUTES */}
+
         <Route
           path="/jobs"
-          element={<Jobs />}
+          element={
+            <ProtectedRoute role="student">
+              <Jobs />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/saved-jobs"
-          element={<SavedJobs />}
-        />
-
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
-
-        <Route
-          path="/student-dashboard"
-          element={<StudentDashboard />}
-        />
-
-        <Route
-          path="/recruiter-dashboard"
-          element={<RecruiterDashboard />}
+          element={
+            <ProtectedRoute role="student">
+              <SavedJobs />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/my-applications"
-          element={<MyApplications />}
-        />
-
-        <Route
-          path="/create-job"
-          element={<CreateJob />}
-        />
-
-        <Route
-          path="/my-jobs"
-          element={<MyJobs />}
-        />
-
-        <Route
-          path="/applicants/:jobId"
-          element={<Applicants />}
+          element={
+            <ProtectedRoute role="student">
+              <MyApplications />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/notifications"
-          element={<Notifications />}
+          element={
+            <ProtectedRoute role="student">
+              <Notifications />
+            </ProtectedRoute>
+          }
         />
 
         <Route
-          path="/job/:id"
-          element={<JobDetails />}
+          path="/student-dashboard"
+          element={
+            <ProtectedRoute role="student">
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* RECRUITER ROUTES */}
+
+        <Route
+          path="/create-job"
+          element={
+            <ProtectedRoute role="recruiter">
+              <CreateJob />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-jobs"
+          element={
+            <ProtectedRoute role="recruiter">
+              <MyJobs />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/recruiter-dashboard"
+          element={
+            <ProtectedRoute role="recruiter">
+              <RecruiterDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/applicants/:jobId"
+          element={
+            <ProtectedRoute role="recruiter">
+              <Applicants />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/edit-job/:jobId"
-          element={<EditJob />}
+          element={
+            <ProtectedRoute role="recruiter">
+              <EditJob />
+            </ProtectedRoute>
+          }
         />
+
+        {/* COMMON ROUTES */}
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/job/:id"
+          element={
+            <ProtectedRoute>
+              <JobDetails />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </>
   );
@@ -113,14 +172,12 @@ function Layout() {
 function App() {
   return (
     <BrowserRouter>
-
       <ToastContainer
         position="top-right"
         autoClose={3000}
       />
 
       <Layout />
-
     </BrowserRouter>
   );
 }
